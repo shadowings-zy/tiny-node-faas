@@ -1,0 +1,21 @@
+{
+  "name": "tiny-node-faas",
+  "version": "1.0.0",
+  "description": "a light weight faas framework coding by nodejs",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon ./index.js"
+  },
+  "keywords": [
+    "faas",
+    "nodejs"
+  ],
+  "author": "shadowingszy",
+  "license": "MIT",
+  "dependencies": {
+    "koa": "^2.13.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.6"
+  }
+}
