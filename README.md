@@ -24,10 +24,12 @@ response:
 {
   status: number, // status code, 0 is OK, 1 is ERROR
   message: string, // message of the result
-  func: {
-    id: number, // the id of the function
-    path: string, // the path of the function
-    fullPath: string, // the full path of the function
+  data: {
+    func: {
+      id: number, // the id of the function
+      path: string, // the path of the function
+      fullPath: string, // the full path of the function
+    }
   }
 }
 ```
@@ -36,7 +38,7 @@ response:
 
 request:
 ```
-METHOD: POST 
+METHOD: PUT
 PATH: /func/update
 BODY: {
   author: string, // author of the function
@@ -59,7 +61,7 @@ response:
 request:
 ```
 METHOD: GET 
-PATH: /func/get
+PATH: /func
 BODY: {
   author: string, // author of the function
   id?: number, // the id of the function. You can get all your function by not adding this parameter 
@@ -71,14 +73,16 @@ response:
 {
   status: number, // status code, 0 is OK, 1 is ERROR
   message: string, // message of the result
-  funcs: [
-    {
-      id: number, // the id of the function
-      path: string, // the path of the function
-      fullPath: string, // the full path of the function 
-      content: string, // the content of the function
-    }
-  ],
+  data: {
+    funcs: [
+      {
+        id: number, // the id of the function
+        path: string, // the path of the function
+        fullPath: string, // the full path of the function 
+        content: string, // the content of the function
+      }
+    ],
+  }
 }
 ```
 
@@ -97,6 +101,8 @@ response:
 {
   status: number, // status code, 0 is OK, 1 is ERROR.
   message: string, // message of the result.
-  output: any, // the output of the function 
+  data: {
+    output: any, // the output of the function 
+  }
 }
 ```

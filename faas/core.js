@@ -1,16 +1,10 @@
-const { generateCode } = require('./generateCode')
 const vm = require('vm')
-
-const DEFAULT_TIME_OUT = 5000
-
-const DEFAULT_OPTIONS = {
-  timeout: DEFAULT_TIME_OUT,
-  microtaskMode: 'afterEvaluate',
-}
+const { DEFAULT_FUNCTION_EXEC_OPTIONS } = require('./constants')
+const { generateCode } = require('./generateCode')
 
 const runFunction = async (ctx, func, options) => {
   let timer = null
-  const faasOptions = Object.assign(DEFAULT_OPTIONS, options)
+  const faasOptions = Object.assign(DEFAULT_FUNCTION_EXEC_OPTIONS, options)
   const { id: funcId, scriptPath } = func
 
   const result = await new Promise((resolve, reject) => {

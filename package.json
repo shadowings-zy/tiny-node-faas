@@ -13,7 +13,9 @@
   "author": "shadowingszy",
   "license": "MIT",
   "dependencies": {
-    "koa": "^2.13.0"
+    "koa": "^2.13.0",
+    "koa-bodyparser": "^4.3.0",
+    "koa-router": "^10.0.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.6"
