@@ -4,7 +4,7 @@
   "description": "a light weight faas framework coding by nodejs",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon ./index.js"
+    "start": "nodemon ./server/index.js"
   },
   "keywords": [
     "faas",
@@ -13,6 +13,8 @@
   "author": "shadowingszy",
   "license": "MIT",
   "dependencies": {
+    "crypto-random-string": "^3.3.0",
+    "fs-extra": "^9.0.1",
     "koa": "^2.13.0",
     "koa-bodyparser": "^4.3.0",
     "koa-router": "^10.0.0"
