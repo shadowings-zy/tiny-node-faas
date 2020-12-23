@@ -11,7 +11,8 @@ execRouter.post('/:id', async (ctx, next) => {
   const { id } = ctx.params
 
   const funcRootDirPath = path.join(ROOT_PATH, `./func`)
-  const funcDirList = await filterTargetFuncDir(funcRootDirPath, `${id}|`)
+  const funcDirList = await filterTargetFuncDir(funcRootDirPath, { id })
+  
   if (funcDirList.length === 0) {
     throw Error('wrong id!')
   }

@@ -3,18 +3,18 @@ const fs = require('fs-extra')
 const Router = require('koa-router')
 const cryptoRandomString = require('crypto-random-string')
 const { FUNC_FILE_NAME, FUNC_OPTIONS_FILE_NAME, FUNC_ID_LENGHT, ROOT_PATH } = require('./constants')
-const { filterTargetFuncDir } = require('../utils/file')
+const { filterTargetFuncDir, getFuncBasicInfo } = require('../utils/file')
 
 const funcRouter = new Router({ prefix: '/func' })
 
 funcRouter.get('/', async (ctx, next) => {
-  const { author, id } = ctx.request.query
+  const { namespace, author, id } = ctx.request.query
 
   const funcRootDirPath = path.join(ROOT_PATH, `./func`)
-  const funcDirList = await filterTargetFuncDir(funcRootDirPath, id ? `${id}|${author}` : author)
+  const funcDirList = await filterTargetFuncDir(funcRootDirPath, { namespace, author, id })
   const targetFuncList = await Promise.all(
     funcDirList.map(async (item) => {
-      const funcInfo = { id: item.split('|')[0], content: '' }
+      const funcInfo = getFuncBasicInfo(item)
       const funcFilePath = path.join(funcRootDirPath, item, FUNC_FILE_NAME)
       const funcOptionsPath = path.join(funcRootDirPath, item, FUNC_OPTIONS_FILE_NAME)
 
@@ -37,11 +37,11 @@ funcRouter.get('/', async (ctx, next) => {
 })
 
 funcRouter.post('/add', async (ctx, next) => {
-  const { author, func, options } = ctx.request.body
+  const { namespace, author, func, options } = ctx.request.body
 
   const id = cryptoRandomString({ length: FUNC_ID_LENGHT })
 
-  const funcDirStorePath = path.join(ROOT_PATH, `./func/${id}|${author}`)
+  const funcDirStorePath = path.join(ROOT_PATH, `./func/${id}|${author}|${namespace}`)
   const funcFileStorePath = path.join(funcDirStorePath, FUNC_FILE_NAME)
   const funcOptionsStorePath = path.join(funcDirStorePath, FUNC_OPTIONS_FILE_NAME)
 
@@ -56,14 +56,14 @@ funcRouter.post('/add', async (ctx, next) => {
 })
 
 funcRouter.put('/update', async (ctx, next) => {
-  const { author, id, func, options } = ctx.request.body
+  const { id, func, options } = ctx.request.body
 
-  const funcDirStorePath = path.join(ROOT_PATH, `./func/${id}|${author}`)
-  const isValidFuncPath = await fs.pathExists(funcDirStorePath)
-  if (!isValidFuncPath) {
+  const funcRootDirPath = path.join(ROOT_PATH, `./func`)
+  const funcDirList = await filterTargetFuncDir(funcRootDirPath, { id })
+  if (funcDirList.length !== 1) {
     throw Error('invalid function id!')
   }
-
+  const funcDirStorePath = path.join(funcRootDirPath, `./${funcDirList[0]}`)
   const funcFileStorePath = path.join(funcDirStorePath, FUNC_FILE_NAME)
   const funcOptionsStorePath = path.join(funcDirStorePath, FUNC_OPTIONS_FILE_NAME)
 
