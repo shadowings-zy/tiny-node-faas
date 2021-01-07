@@ -1,20 +1,34 @@
 <template>
   <div class="func-list">
-    <el-form :inline="true" :model="filterForm" class="demo-form-inline">
-      <el-form-item label="函数命名空间">
-        <el-input
-          v-model="filterForm.namespace"
-          placeholder="函数命名空间"
-        ></el-input>
-      </el-form-item>
-      <el-form-item label="函数id">
-        <el-input v-model="filterForm.id" placeholder="函数命名空间"></el-input>
-      </el-form-item>
-      <el-form-item>
+    <el-form
+      :inline="true"
+      :model="filterForm"
+      class="func-search-form"
+      size="small"
+    >
+      <div>
+        <el-form-item label="命名空间">
+          <el-input
+            class="func-search-input"
+            v-model="filterForm.namespace"
+            placeholder="函数命名空间"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="函数ID">
+          <el-input
+            class="func-search-input"
+            v-model="filterForm.id"
+            placeholder="函数ID"
+          ></el-input>
+        </el-form-item>
+      </div>
+      <el-form-item class="func-search-button">
         <el-button type="primary" @click="queryFunc">查询</el-button>
       </el-form-item>
     </el-form>
-    <el-table :data="tableData">
+    <divider color="#ebeef5"></divider>
+    <item-header text="函数列表"></item-header>
+    <el-table :data="tableData" class="func-table">
       <el-table-column prop="id" label="函数ID"> </el-table-column>
       <el-table-column prop="author" label="函数作者"> </el-table-column>
       <el-table-column prop="namespace" label="命名空间"> </el-table-column>
@@ -36,7 +50,10 @@
 </template>
 
 <script>
+import Divider from "../../components/Divider.vue";
+import ItemHeader from "../../components/ItemHeader.vue";
 export default {
+  components: { Divider, ItemHeader },
   name: "FuncList",
   data() {
     return {
@@ -95,5 +112,25 @@ export default {
 .func-list {
   width: 100vw;
   margin: 0 auto;
+}
+.func-search-form {
+  padding: 19px 20px 0 20px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+.func-search-input {
+  width: 20vw;
+  margin-right: 40px;
+}
+.func-search-button {
+  align-self: flex-start;
+}
+.func-table {
+  border-top: 1px solid #ebeef5;
+  border-left: 1px solid #ebeef5;
+  border-right: 1px solid #ebeef5;
+  margin: 0 20px 40px 20px;
 }
 </style>

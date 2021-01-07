@@ -3,6 +3,7 @@ const fs = require('fs-extra')
 const Router = require('koa-router')
 const cryptoRandomString = require('crypto-random-string')
 const { FUNC_FILE_NAME, FUNC_OPTIONS_FILE_NAME, FUNC_ID_LENGHT, ROOT_PATH } = require('./constants')
+const { DEFAULT_FUNCTION_EXEC_OPTIONS } = require('../faas/constants')
 const { filterTargetFuncDir, getFuncBasicInfo } = require('../utils/file')
 
 const funcRouter = new Router({ prefix: '/func' })
@@ -23,7 +24,7 @@ funcRouter.get('/', async (ctx, next) => {
 
       if (fs.pathExists(funcOptionsPath)) {
         const funcOptionsBuffer = await fs.readFile(funcOptionsPath)
-        funcInfo.options = funcOptionsBuffer.toString()
+        funcInfo.options = JSON.parse(funcOptionsBuffer.toString())
       }
 
       return funcInfo
@@ -47,9 +48,7 @@ funcRouter.post('/add', async (ctx, next) => {
 
   await fs.ensureDir(funcDirStorePath)
   await fs.writeFile(funcFileStorePath, func)
-  if (options) {
-    await fs.writeFile(funcOptionsStorePath, options)
-  }
+  await fs.writeFile(funcOptionsStorePath, options ? options : JSON.stringify(DEFAULT_FUNCTION_EXEC_OPTIONS))
 
   ctx.body = { id }
   await next()

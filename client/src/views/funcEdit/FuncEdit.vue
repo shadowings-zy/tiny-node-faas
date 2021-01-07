@@ -1,71 +1,57 @@
 <template>
   <div class="func-edit">
-    <el-collapse v-model="activeNames" @change="handleChange">
-      <el-collapse-item name="options">
-        <template #title>
-          <div class="collapse-item-title">函数配置</div>
-        </template>
-        <el-form
-          class="func-option"
-          :model="funcOptionsForm"
-          label-width="180px"
-          size="mini"
-          label-position="left"
-        >
-          <el-form-item
-            label="函数id"
-            v-show="
-              funcOptionsForm.funcId !== '' &&
-              funcOptionsForm.funcId !== undefined
-            "
-          >
-            <el-input
-              class="form-item"
-              v-model="funcOptionsForm.funcId"
-              :disabled="true"
-            ></el-input>
-          </el-form-item>
-          <el-form-item label="函数作者">
-            <el-input
-              class="form-item"
-              v-model="funcOptionsForm.author"
-              :disabled="true"
-            ></el-input>
-          </el-form-item>
-          <el-form-item label="命名空间">
-            <el-input
-              class="form-item"
-              v-model="funcOptionsForm.funcName"
-              :maxlength="15"
-              placeholder="命名空间，仅支持英文"
-            ></el-input>
-          </el-form-item>
-          <el-form-item label="超时时间(ms)">
-            <el-input-number
-              class="form-item"
-              v-model="funcOptionsForm.timeout"
-              :min="1000"
-              :max="10000"
-              :step="100"
-            ></el-input-number>
-          </el-form-item>
-          <el-form-item label="函数描述">
-            <el-input
-              class="form-item"
-              v-model="funcOptionsForm.description"
-              :maxlength="40"
-              placeholder="函数描述"
-            ></el-input>
-          </el-form-item>
-        </el-form>
-      </el-collapse-item>
-      <el-collapse-item name="edit">
-        <template #title>
-          <div class="collapse-item-title">函数编辑</div>
-        </template>
-        <div class="func-editor" ref="editor"></div>
-      </el-collapse-item>
-    </el-collapse>
+    <item-header text="函数信息"></item-header>
+    <el-form
+      class="func-option"
+      :model="funcOptionsForm"
+      label-width="180px"
+      size="mini"
+      label-position="left"
+    >
+      <el-form-item
+        label="函数id"
+        v-show="
+          funcOptionsForm.funcId !== '' && funcOptionsForm.funcId !== undefined
+        "
+      >
+        <el-input
+          class="form-item"
+          v-model="funcOptionsForm.funcId"
+          :disabled="true"
+        ></el-input>
+      </el-form-item>
+      <el-form-item label="函数作者">
+        <el-input
+          class="form-item"
+          v-model="funcOptionsForm.author"
+          :disabled="true"
+        ></el-input>
+      </el-form-item>
+      <el-form-item label="命名空间">
+        <el-input
+          class="form-item"
+          v-model="funcOptionsForm.funcName"
+          :maxlength="15"
+          placeholder="命名空间，仅支持英文"
+        ></el-input>
+      </el-form-item>
+      <el-form-item label="超时时间">
+        <el-input class="form-item" v-model="funcOptionsForm.timeout">
+          <template #append>ms</template>
+        </el-input>
+      </el-form-item>
+      <el-form-item label="函数描述">
+        <el-input
+          class="form-item"
+          v-model="funcOptionsForm.description"
+          :maxlength="40"
+          placeholder="函数描述"
+        ></el-input>
+      </el-form-item>
+    </el-form>
+    <divider color="#ebeef5"></divider>
+    <item-header text="函数编辑" />
+    <div class="func-editor" ref="editor"></div>
     <el-button class="save-button" type="primary" @click="saveCode"
       >保存函数</el-button
     >
@@ -73,6 +59,8 @@
 </template>
 
 <script>
+import Divider from "../../components/Divider.vue";
+import ItemHeader from "../../components/ItemHeader.vue";
 import {
   initializeCodeEditor,
   getCodeEditor,
@@ -82,6 +70,7 @@ import { LOCAL_STORAGE_VISITOR_KEY } from "../../utils/figurePrint";
 
 export default {
   name: "FuncEdit",
+  components: { "item-header": ItemHeader, divider: Divider },
   data() {
     return {
       activeNames: ["options", "edit"],
@@ -120,7 +109,7 @@ export default {
   margin: 0 0 0 20px;
 }
 .func-editor {
-  height: 200px;
+  height: 400px;
   border: 1px solid #ebeef5;
   margin: 0 20px;
 }

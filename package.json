@@ -2,24 +2,9 @@
   "name": "tiny-node-faas",
   "version": "1.0.0",
   "description": "a light weight faas framework coding by nodejs",
-  "main": "index.js",
   "scripts": {
-    "start": "nodemon ./server/index.js"
-  },
-  "keywords": [
-    "faas",
-    "nodejs"
-  ],
-  "author": "shadowingszy",
-  "license": "MIT",
-  "dependencies": {
-    "crypto-random-string": "^3.3.0",
-    "fs-extra": "^9.0.1",
-    "koa": "^2.13.0",
-    "koa-bodyparser": "^4.3.0",
-    "koa-router": "^10.0.0"
-  },
-  "devDependencies": {
-    "nodemon": "^2.0.6"
+    "dev": "npm run dev:client & npm run dev:server",
+    "dev:client": "cd client && npm run serve",
+    "dev:server": "cd server && npm run start"
   }
 }

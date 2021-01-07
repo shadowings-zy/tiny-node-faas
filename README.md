@@ -14,6 +14,7 @@ request:
 METHOD: POST 
 PATH: /func/add
 BODY: {
+  namespace: string, // namespace of the function
   author: string, // author of the function
   func: string, // your function is here
   options?: FunctionOptions, // the options of the function, if you don't add this parameter, we will use default options
@@ -38,7 +39,6 @@ request:
 METHOD: PUT
 PATH: /func/update
 BODY: {
-  author: string, // author of the function
   id: string, // the id of the function
   func: string, // your new function
   options?: FunctionOptions, // your new options of the function, if you don't add this parameter, we will use origin options
@@ -60,8 +60,9 @@ request:
 METHOD: GET 
 PATH: /func
 PARAM: {
-  author: string, // author of the function
-  id?: string, // the id of the function. You can get all your function by not adding this parameter 
+  namespace?: string, // namespace of the function. You can get all function in target namespace by adding this parameter 
+  author?: string, // author of the function. You can get all function in target author by adding this parameter 
+  id?: string, // the id of the function. You can get all function in target id by adding this parameter 
 }
 ```
 
@@ -73,6 +74,8 @@ response:
   data: {
     funcs: [
       {
+        namespace: string, // namespace of the function
+        author: string, // author of the function
         id: string, // the id of the function
         content: string, // the content of the function
         options?: FunctionOptions

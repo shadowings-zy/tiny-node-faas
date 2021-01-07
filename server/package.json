@@ -1,7 +1,5 @@
 {
-  "name": "tiny-node-faas",
-  "version": "1.0.0",
-  "description": "a light weight faas framework coding by nodejs",
+  "name": "tiny-node-faas-server",
   "main": "index.js",
   "scripts": {
     "start": "nodemon ./index.js"
