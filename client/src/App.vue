@@ -1,16 +1,18 @@
 <template>
-  <el-menu
-    :default-active="$store.state.menuItemIndex"
-    class="el-menu-demo"
-    mode="horizontal"
-    @select="handleSelect"
-  >
-    <el-menu-item index="0">首页</el-menu-item>
-    <el-menu-item index="1">函数编辑</el-menu-item>
-    <el-menu-item index="2">函数列表</el-menu-item>
-    <el-menu-item index="3">关于作者</el-menu-item>
-  </el-menu>
-  <router-view />
+  <div class="container">
+    <el-menu
+      :default-active="$store.state.menuItemIndex"
+      class="el-menu-demo"
+      mode="horizontal"
+      @select="handleSelect"
+    >
+      <el-menu-item index="0">首页</el-menu-item>
+      <el-menu-item index="1">函数编辑</el-menu-item>
+      <el-menu-item index="2">函数列表</el-menu-item>
+      <el-menu-item index="3">关于作者</el-menu-item>
+    </el-menu>
+    <router-view></router-view>
+  </div>
 </template>
 
 <script>
@@ -26,3 +28,10 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.container {
+  min-width: 100vw;
+  min-height: 100vh;
+}
+</style>

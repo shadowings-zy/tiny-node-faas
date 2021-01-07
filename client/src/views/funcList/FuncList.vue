@@ -22,8 +22,10 @@
           ></el-input>
         </el-form-item>
       </div>
-      <el-form-item class="func-search-button">
-        <el-button type="primary" @click="queryFunc">查询</el-button>
+      <el-form-item>
+        <el-button type="primary" @click="queryFunc" class="func-search-button"
+          >查询</el-button
+        >
       </el-form-item>
     </el-form>
     <divider color="#ebeef5"></divider>
@@ -125,12 +127,13 @@ export default {
   margin-right: 40px;
 }
 .func-search-button {
-  align-self: flex-start;
+  width: 75px;
 }
 .func-table {
   border-top: 1px solid #ebeef5;
   border-left: 1px solid #ebeef5;
   border-right: 1px solid #ebeef5;
   margin: 0 20px 40px 20px;
+  width: calc(100% - 40px);
 }
 </style>
