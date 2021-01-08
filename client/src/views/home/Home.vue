@@ -4,9 +4,10 @@
     <div class="sub-title">
       一款基于NodeJs的FaaS解决方案，用Serverless的方式编写JS代码。
     </div>
-    <div  class="button-group">
-      <el-button type="primary">立即开始</el-button>
-      <el-button>查看源码</el-button>
+    <svg-icon name="computer" :width="500" :height="500" color="#409EFF" />
+    <div class="button-group">
+      <el-button type="primary" class="button">立即开始</el-button>
+      <el-button  class="button">查看源码</el-button>
     </div>
   </div>
 </template>
@@ -25,7 +26,7 @@ export default {
 }
 .title {
   font-size: 34px;
-  margin: 30px 0 0 0;
+  padding: 30px 0 0 0;
   line-height: 48px;
   color: #555;
 }
@@ -33,9 +34,15 @@ export default {
   font-size: 18px;
   line-height: 28px;
   color: #888;
-  margin: 20px 0 5px;
+  padding: 30px 0 10px 0;
 }
 .button-group {
-  margin: 30px;
+  padding: 20px;
+}
+.button {
+  margin: 0 40px;
+  width: 150px;
+  height: 50px;
+  font-size: 16px;
 }
 </style>
