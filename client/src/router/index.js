@@ -2,6 +2,7 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 import { ROUTER_MAP } from './constant'
 import store from '../store'
 import Home from '../views/home/Home.vue'
+import Document from '../views/document/Document.vue'
 import About from '../views/about/About.vue'
 import FuncList from '../views/funcList/FuncList.vue'
 import FuncEdit from '../views/funcEdit/FuncEdit.vue'
@@ -17,14 +18,18 @@ const router = createRouter({
     },
     {
       path: ROUTER_MAP[1],
-      component: FuncEdit
+      component: Document
     },
     {
       path: ROUTER_MAP[2],
-      component: FuncList
+      component: FuncEdit
     },
     {
       path: ROUTER_MAP[3],
+      component: FuncList
+    },
+    {
+      path: ROUTER_MAP[4],
       component: About
     }
   ]

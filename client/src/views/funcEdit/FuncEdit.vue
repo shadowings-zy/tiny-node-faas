@@ -1,55 +1,62 @@
 <template>
   <div class="func-edit">
-    <item-header text="函数信息"></item-header>
-    <el-form
-      class="func-option"
-      :model="funcOptionsForm"
-      label-width="180px"
-      size="mini"
-      label-position="left"
-    >
-      <el-form-item
-        label="函数id"
-        v-show="
-          funcOptionsForm.funcId !== '' && funcOptionsForm.funcId !== undefined
-        "
-      >
-        <el-input
-          class="form-item"
-          v-model="funcOptionsForm.funcId"
-          :disabled="true"
-        ></el-input>
-      </el-form-item>
-      <el-form-item label="函数作者">
-        <el-input
-          class="form-item"
-          v-model="funcOptionsForm.author"
-          :disabled="true"
-        ></el-input>
-      </el-form-item>
-      <el-form-item label="命名空间">
-        <el-input
-          class="form-item"
-          v-model="funcOptionsForm.funcName"
-          :maxlength="15"
-          placeholder="命名空间，仅支持英文"
-        ></el-input>
-      </el-form-item>
-      <el-form-item label="超时时间">
-        <el-input class="form-item" v-model="funcOptionsForm.timeout">
-          <template #append>ms</template>
-        </el-input>
-      </el-form-item>
-      <el-form-item label="函数描述">
-        <el-input
-          class="form-item"
-          v-model="funcOptionsForm.description"
-          :maxlength="40"
-          placeholder="函数描述"
-        ></el-input>
-      </el-form-item>
-    </el-form>
-    <divider color="#ebeef5"></divider>
+    <el-collapse v-model="activeNames">
+      <el-collapse-item name="options">
+        <template #title>
+          <p class="item-header">函数信息</p>
+        </template>
+        <el-form
+          class="func-option"
+          :model="funcOptionsForm"
+          label-width="180px"
+          size="mini"
+          label-position="left"
+        >
+          <el-form-item
+            label="函数id"
+            v-show="
+              funcOptionsForm.funcId !== '' &&
+              funcOptionsForm.funcId !== undefined
+            "
+          >
+            <el-input
+              class="form-item"
+              v-model="funcOptionsForm.funcId"
+              :disabled="true"
+            ></el-input>
+          </el-form-item>
+          <el-form-item label="函数作者">
+            <el-input
+              class="form-item"
+              v-model="funcOptionsForm.author"
+              :disabled="true"
+            ></el-input>
+          </el-form-item>
+          <el-form-item label="命名空间">
+            <el-input
+              class="form-item"
+              v-model="funcOptionsForm.funcName"
+              :maxlength="15"
+              placeholder="命名空间，仅支持英文"
+            ></el-input>
+          </el-form-item>
+          <el-form-item label="超时时间">
+            <el-input class="form-item" v-model="funcOptionsForm.timeout">
+              <template #append>ms</template>
+            </el-input>
+          </el-form-item>
+          <el-form-item label="函数描述">
+            <el-input
+              class="form-item"
+              v-model="funcOptionsForm.description"
+              :maxlength="40"
+              placeholder="函数描述"
+            ></el-input>
+          </el-form-item>
+        </el-form>
+      </el-collapse-item>
+    </el-collapse>
+    <!-- <divider color="#ebeef5"></divider> -->
     <item-header text="函数编辑" />
     <div class="func-editor" ref="editor"></div>
     <el-button class="save-button" type="primary" @click="saveCode"
@@ -59,7 +66,6 @@
 </template>
 
 <script>
-import Divider from "../../components/Divider.vue";
 import ItemHeader from "../../components/ItemHeader.vue";
 import {
   initializeCodeEditor,
@@ -70,10 +76,10 @@ import { LOCAL_STORAGE_VISITOR_KEY } from "../../utils/figurePrint";
 
 export default {
   name: "FuncEdit",
-  components: { "item-header": ItemHeader, divider: Divider },
+  components: { ItemHeader },
   data() {
     return {
-      activeNames: ["options", "edit"],
+      activeNames: ["options"],
       funcOptionsForm: {
         funcId: "",
         author: window.localStorage.getItem(LOCAL_STORAGE_VISITOR_KEY),
@@ -109,7 +115,7 @@ export default {
   margin: 0 0 0 20px;
 }
 .func-editor {
-  height: 400px;
+  height: 300px;
   border: 1px solid #ebeef5;
   margin: 0 20px;
 }
@@ -122,5 +128,13 @@ export default {
 .save-button {
   float: right;
   margin: 20px;
+}
+.item-header {
+  width: 200px;
+  height: 49px;
+  line-height: 49px;
+  font-size: 14px;
+  font-weight: bold;
+  padding-left: 20px;
 }
 </style>

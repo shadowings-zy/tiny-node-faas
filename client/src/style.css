@@ -4,3 +4,10 @@ body {
   color: #303133;
   font-size: 14px;
 }
+
+pre {
+  width: calc(100% - 40px);
+  padding: 20px;
+  overflow: auto;
+  background: #f1f2f3;
+}

@@ -1,37 +1,38 @@
 <template>
   <div class="container">
-    <div class="navigator">
-      <div class="navigator-left">
-        <svg-icon name="logo" :width="65" :height="65" color="#409EFF" />
-        TINY-NODE-FAAS
-      </div>
-      <el-menu
-        :default-active="$store.state.menuItemIndex"
-        class="el-menu-demo"
-        mode="horizontal"
-        @select="handleSelect"
-      >
-        <el-menu-item index="0">首页</el-menu-item>
-        <el-menu-item index="1">函数编辑</el-menu-item>
-        <el-menu-item index="2">函数列表</el-menu-item>
-        <el-menu-item index="3">关于作者</el-menu-item>
-      </el-menu>
+    <div v-if="viewValid" class="valid-view">
+      <app-nav></app-nav>
+      <router-view></router-view>
     </div>
-
-    <router-view></router-view>
+    <div v-else class="invalid-view">
+      请在宽度大于{{minWidth}}px的浏览器下浏览该网页，以取得最佳展示效果。
+    </div>
   </div>
 </template>
 
 <script>
-import { ROUTER_MAP } from "./router/constant";
+import AppNav from "./components/AppNav.vue";
+
+const MIN_WIDTH = 750;
 
 export default {
   name: "App",
-  methods: {
-    handleSelect(key) {
-      this.$store.commit("setMenuItemIndex", key);
-      this.$router.push(ROUTER_MAP[key]);
-    },
+  components: { AppNav },
+  data() {
+    return {
+      viewValid: true,
+      minWidth: MIN_WIDTH
+    };
+  },
+  mounted() {
+    window.addEventListener("resize", () => {
+      console.log(document.body.clientWidth);
+      if (document.body.clientWidth < MIN_WIDTH && this.viewValid) {
+        this.viewValid = false;
+      } else if (document.body.clientWidth >= MIN_WIDTH && !this.viewValid) {
+        this.viewValid = true;
+      }
+    });
   },
 };
 </script>
@@ -41,15 +42,17 @@ export default {
   min-width: 100vw;
   min-height: 100vh;
 }
-.navigator {
-  display: flex;
-  flex-direction: row;
+.valid-view {
+  min-width: 100vw;
+  min-height: 100vh;
 }
-.navigator-left {
-  width: 250px;
-  font-size: 22px;
-  line-height: 65px;
-  height: 65px;
-  color: #409EFF
+.invalid-view {
+  min-width: 100vw;
+  min-height: 100vh;
+  font-size: 3vw;
+  font-weight: bold;
+  line-height: 100vh;
+  text-align: center;
+  word-break: break-all;
 }
 </style>
