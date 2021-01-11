@@ -1,6 +1,6 @@
 const STATUS_CODE = {
-  OK: 0,
-  ERROR: 1,
+  ERROR: 0,
+  OK: 200,
 }
 
 module.exports = {

@@ -12,11 +12,11 @@ module.exports.func = async (ctx) => {
 
 let codeEditor = null
 
-export const initializeCodeEditor = (dom) => {
+export const initializeCodeEditor = (dom, code) => {
   if (!codeEditor) {
     codeEditor = monaco.editor.create(dom, {
       language: "javascript",
-      value: INIT_CODE,
+      value: code ? code : INIT_CODE,
       automaticLayout: true,
     });
   }

@@ -26,7 +26,6 @@ export default {
   },
   mounted() {
     window.addEventListener("resize", () => {
-      console.log(document.body.clientWidth);
       if (document.body.clientWidth < MIN_WIDTH && this.viewValid) {
         this.viewValid = false;
       } else if (document.body.clientWidth >= MIN_WIDTH && !this.viewValid) {

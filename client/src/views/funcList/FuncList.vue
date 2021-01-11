@@ -34,6 +34,11 @@
       <el-table-column prop="id" label="函数ID"> </el-table-column>
       <el-table-column prop="author" label="函数作者"> </el-table-column>
       <el-table-column prop="namespace" label="命名空间"> </el-table-column>
+      <el-table-column prop="url" label="访问地址">
+        <template #default="scope">
+          <div class="cell">{{ `${baseUrl}exec/${scope.row.id}` }}</div>
+        </template>
+      </el-table-column>
       <el-table-column prop="description" label="函数描述">
         <template #default="scope">
           <div class="cell">{{ scope.row.options.description }}</div>
@@ -44,7 +49,7 @@
           <el-button type="text" size="small" @click="editFunc(scope.row)"
             >编辑</el-button
           >
-          <el-button type="text" size="small">删除</el-button>
+          <!-- <el-button type="text" size="small">删除</el-button> -->
         </template>
       </el-table-column>
     </el-table>
@@ -54,6 +59,12 @@
 <script>
 import Divider from "../../components/Divider.vue";
 import ItemHeader from "../../components/ItemHeader.vue";
+import { LOCAL_STORAGE_VISITOR_KEY } from "../../utils/figurePrint";
+import { getFuncList } from "../../service/func";
+import { ROUTER_MAP } from "../../router/constant";
+
+const BASE_URL = "localhost:12000/";
+
 export default {
   components: { Divider, ItemHeader },
   name: "FuncList",
@@ -63,49 +74,28 @@ export default {
         namespace: "",
         id: "",
       },
-      tableData: [
-        {
-          id: "5f019b4cc481c755",
-          author: "shadowingszy",
-          namespace: "test",
-          content:
-            "const wait = (time) => {\n  return new Promise((resolve) => {\n    setTimeout(() => {\n      resolve()\n    }, time)\n  })\n}\n\nmodule.exports.func = async (ctx) => {\n  console.log(`This is shadowingszy's func, to get time after 1s.`)\n  await wait(1000)\n  return `currentTime: ${Date.now()}`\n}\n",
-          options: {
-            description: "hahah",
-          },
-        },
-        {
-          id: "9f9fd935a0af6c8f",
-          author: "shadowingszy",
-          namespace: "test2",
-          content:
-            "const wait = (time) => {\n  return new Promise((resolve) => {\n    setTimeout(() => {\n      resolve()\n    }, time)\n  })\n}\n\nmodule.exports.func = async (ctx) => {\n  console.log(`This is shadowingszy's func, to get time after 2s.`)\n  await wait(2000)\n  return `currentTime: ${Date.now()}`\n}\n",
-          options: {
-            description: "66666",
-          },
-        },
-        {
-          id: "f80d8c8dba48ba04",
-          author: "shadowingszy",
-          namespace: "test",
-          content:
-            "const wait = (time) => {\n  return new Promise((resolve) => {\n    setTimeout(() => {\n      resolve()\n    }, time)\n  })\n}\n\nmodule.exports.func = async (ctx) => {\n  console.log(`This is shadowingszy's func, to get time after 3s.`)\n  await wait(3000)\n  return `currentTime: ${Date.now()}`\n}\n",
-          options: {
-            description: "",
-            timeout: 5000,
-            microtaskMode: "afterEvaluate",
-          },
-        },
-      ],
+      tableData: [],
+      baseUrl: BASE_URL,
     };
   },
   methods: {
     queryFunc() {
-      console.log(this.filterForm);
+      const _this = this;
+      getFuncList({
+        author: window.localStorage.getItem(LOCAL_STORAGE_VISITOR_KEY),
+        namespace: _this.filterForm.namespace,
+        id: _this.filterForm.id,
+      }).then((res) => {
+        _this.tableData = res.data.data.funcs;
+      });
     },
     editFunc(row) {
-      console.log(row);
+      this.$store.commit("setFuncId", row.id);
+      this.$router.push(ROUTER_MAP[2]);
     },
+  },
+  mounted() {
+    this.queryFunc();
   },
 };
 </script>
