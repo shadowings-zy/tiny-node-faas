@@ -3,6 +3,7 @@
 node_modules
 
 server/func
+server/static
 
 client/dist
 client/dist-ssr

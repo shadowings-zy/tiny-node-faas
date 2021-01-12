@@ -7,6 +7,21 @@ const { filterTargetFuncDir } = require('../utils/file')
 
 const execRouter = new Router({ prefix: '/exec' })
 
+execRouter.get('/:id', async (ctx, next) => {
+  const { id } = ctx.params
+
+  const funcRootDirPath = path.join(ROOT_PATH, `./func`)
+  const funcDirList = await filterTargetFuncDir(funcRootDirPath, { id })
+
+  if (funcDirList.length === 0) {
+    throw Error('wrong id!')
+  }
+
+  ctx.rawResponse = true // 无需format response
+  ctx.body = 'GET method not support, please use POST.'
+  await next()
+})
+
 execRouter.post('/:id', async (ctx, next) => {
   const { id } = ctx.params
 
@@ -23,6 +38,7 @@ execRouter.post('/:id', async (ctx, next) => {
     scriptPath: path.join(ROOT_PATH, `./func/${funcDirList[0]}`, FUNC_FILE_NAME),
     options: JSON.parse(options.toString())
   })
+  ctx.rawResponse = true // 无需format response
   ctx.body = output
   await next()
 })

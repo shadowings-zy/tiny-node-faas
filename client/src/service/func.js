@@ -1,9 +1,9 @@
-import axios from 'axios'
+import { http } from './axios'
 import { cleanObject } from "../utils/objectUtils";
 
 export const getFuncList = (req) => {
   const { author, namespace, id } = req
-  return axios
+  return http
     .get("/func", {
       params: cleanObject({
         author,
@@ -15,7 +15,7 @@ export const getFuncList = (req) => {
 
 export const addFunction = (req) => {
   const { author, namespace, func, options } = req
-  return axios
+  return http
     .post("/func/add", cleanObject({
       func,
       options,
@@ -26,7 +26,7 @@ export const addFunction = (req) => {
 
 export const updateFunction = (req) => {
   const { id, func, options } = req
-  return axios
+  return http
     .put("/func/update", cleanObject({
       func,
       options,

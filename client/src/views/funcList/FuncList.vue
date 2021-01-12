@@ -34,11 +34,6 @@
       <el-table-column prop="id" label="函数ID"> </el-table-column>
       <el-table-column prop="author" label="函数作者"> </el-table-column>
       <el-table-column prop="namespace" label="命名空间"> </el-table-column>
-      <el-table-column prop="url" label="访问地址">
-        <template #default="scope">
-          <div class="cell">{{ `${baseUrl}exec/${scope.row.id}` }}</div>
-        </template>
-      </el-table-column>
       <el-table-column prop="description" label="函数描述">
         <template #default="scope">
           <div class="cell">{{ scope.row.options.description }}</div>
@@ -46,9 +41,20 @@
       </el-table-column>
       <el-table-column label="操作" width="200">
         <template #default="scope">
-          <el-button type="text" size="small" @click="editFunc(scope.row)"
-            >编辑</el-button
+          <el-popover
+            popper-class="func-url"
+            placement="top-end"
+            trigger="hover"
+            :width="520"
+            :content="`[POST] ${baseUrl}exec/${scope.row.id}`"
           >
+            <template #reference>
+              <el-button type="text" size="small"> 查看函数地址 </el-button>
+            </template>
+          </el-popover>
+          <el-button type="text" size="small" @click="editFunc(scope.row)">
+            编辑
+          </el-button>
           <!-- <el-button type="text" size="small">删除</el-button> -->
         </template>
       </el-table-column>
@@ -62,8 +68,7 @@ import ItemHeader from "../../components/ItemHeader.vue";
 import { LOCAL_STORAGE_VISITOR_KEY } from "../../utils/figurePrint";
 import { getFuncList } from "../../service/func";
 import { ROUTER_MAP } from "../../router/constant";
-
-const BASE_URL = "localhost:12000/";
+import { FAAS_BASE_URL } from "../../service/axios";
 
 export default {
   components: { Divider, ItemHeader },
@@ -75,7 +80,7 @@ export default {
         id: "",
       },
       tableData: [],
-      baseUrl: BASE_URL,
+      baseUrl: FAAS_BASE_URL,
     };
   },
   methods: {
@@ -125,5 +130,8 @@ export default {
   border-right: 1px solid #ebeef5;
   margin: 0 20px 40px 20px;
   width: calc(100% - 40px);
+}
+.func-url {
+  text-align: center !important;
 }
 </style>

@@ -60,7 +60,6 @@
         </el-form>
       </el-collapse-item>
     </el-collapse>
-    <!-- <divider color="#ebeef5"></divider> -->
     <item-header text="函数编辑"></item-header>
     <div class="func-editor" ref="editor"></div>
     <el-button
@@ -125,16 +124,54 @@ export default {
     destoryCodeEditor();
   },
   methods: {
+    checkInput(namespace, timeout, content) {
+      console.log("timeout: ", timeout);
+      const timeoutReg = /^[0-9]+.?[0-9]*$/;
+      const validCodeReg = /module\.exports\.func.*=/;
+      if (namespace === "") {
+        this.$message.error("函数命名空间不能为空");
+        return false;
+      }
+      if (!timeoutReg.test(timeout)) {
+        this.$message.error("函数超时时间不合法");
+        return false;
+      }
+      console.log(
+        "parseInt(timeout): ",
+        parseInt(timeout),
+        parseInt(timeout) < 20000
+      );
+      if (timeoutReg.test(timeout) && parseInt(timeout) > 20000) {
+        this.$message.error("函数超时时间不能超过20秒");
+        return false;
+      }
+      if (!validCodeReg.test(content)) {
+        this.$message.error(
+          "函数不合法，函数名必须命名为func，并作为module.exports对象的属性"
+        );
+        return false;
+      }
+      return true;
+    },
     saveCode() {
       const _this = this;
       const funcContent = getCodeEditor().getValue();
+      if (
+        !_this.checkInput(
+          _this.funcOptionsForm.funcNameSpace,
+          _this.funcOptionsForm.timeout,
+          funcContent
+        )
+      ) {
+        return;
+      }
       addFunction({
         author: window.localStorage.getItem(LOCAL_STORAGE_VISITOR_KEY),
         func: funcContent,
         namespace: _this.funcOptionsForm.funcNameSpace,
         options: JSON.stringify({
           description: _this.funcOptionsForm.description,
-          timeout: _this.funcOptionsForm.timeout,
+          timeout: parseInt(_this.funcOptionsForm.timeout),
         }),
       })
         .then((res) => {
