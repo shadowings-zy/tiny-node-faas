@@ -23,30 +23,34 @@
         </el-form-item>
       </div>
       <el-form-item>
-        <el-button type="primary" @click="queryFunc" class="func-search-button"
-          >查询</el-button
-        >
+        <el-button type="primary" @click="queryFunc" class="func-search-button">
+          查询
+        </el-button>
       </el-form-item>
     </el-form>
     <divider color="#ebeef5"></divider>
     <item-header text="函数列表"></item-header>
     <el-table :data="tableData" class="func-table">
-      <el-table-column prop="id" label="函数ID"> </el-table-column>
-      <el-table-column prop="author" label="函数作者"> </el-table-column>
-      <el-table-column prop="namespace" label="命名空间"> </el-table-column>
+      <el-table-column prop="id" label="函数ID" :width="180"> </el-table-column>
+      <el-table-column prop="author" label="函数作者" :width="300">
+      </el-table-column>
+      <el-table-column prop="namespace" label="命名空间" :width="180">
+      </el-table-column>
       <el-table-column prop="description" label="函数描述">
         <template #default="scope">
           <div class="cell">{{ scope.row.options.description }}</div>
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="200">
+      <el-table-column label="操作" :width="200">
         <template #default="scope">
           <el-popover
             popper-class="func-url"
             placement="top-end"
             trigger="hover"
-            :width="520"
-            :content="`[POST] ${baseUrl}exec/${scope.row.id}`"
+            :width="600"
+            :content="`[${scope.row.options.allowMethod.join(
+              '] ['
+            )}] ${baseUrl}exec/${scope.row.id}`"
           >
             <template #reference>
               <el-button type="text" size="small"> 查看函数地址 </el-button>

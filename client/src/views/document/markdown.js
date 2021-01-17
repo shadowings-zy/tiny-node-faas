@@ -2,6 +2,8 @@ export const quickStart = `
 # 快速开始
 
 TINY-NODE-FAAS是一款开源的、基于NodeJs的FaaS解决方案，它可以让我们使用Serverless的方式编写JS代码。
+TINY-NODE-FAAS使用浏览器指纹标注用户信息，因此无需登录。
+但请注意，如果您更换了新的浏览器，则无法查看到在旧的浏览器编写的函数了。
 
 ## 一、函数信息配置
 首先点击函数编辑页前往函数编辑器。

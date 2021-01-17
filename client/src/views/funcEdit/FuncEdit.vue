@@ -37,10 +37,7 @@
               class="form-item"
               v-model="funcOptionsForm.funcNameSpace"
               :maxlength="15"
-              :disabled="
-                funcOptionsForm.funcId !== '' &&
-                funcOptionsForm.funcId !== undefined
-              "
+              :disabled="funcOptionsForm.funcId !== ''"
               placeholder="命名空间，仅支持英文"
             ></el-input>
           </el-form-item>
@@ -57,11 +54,22 @@
               placeholder="函数描述"
             ></el-input>
           </el-form-item>
+          <el-form-item label="请求方法">
+            <el-checkbox-group v-model="funcOptionsForm.allowMethod">
+              <el-checkbox label="GET"></el-checkbox>
+              <el-checkbox label="POST"></el-checkbox>
+            </el-checkbox-group>
+          </el-form-item>
         </el-form>
       </el-collapse-item>
     </el-collapse>
     <item-header text="函数编辑"></item-header>
-    <div class="func-editor" ref="editor"></div>
+    <div
+      :class="
+        funcOptionsForm.funcId === '' ? 'func-editor' : 'func-editor-disable'
+      "
+      ref="editor"
+    ></div>
     <el-button
       v-if="funcOptionsForm.funcId === ''"
       class="save-button"
@@ -98,6 +106,7 @@ export default {
         funcNameSpace: "",
         timeout: 5000,
         description: "",
+        allowMethod: ["GET"],
       },
     };
   },
@@ -113,6 +122,7 @@ export default {
         _this.funcOptionsForm.funcNameSpace = currentFunc.namespace;
         _this.funcOptionsForm.timeout = currentFunc.options.timeout;
         _this.funcOptionsForm.description = currentFunc.options.description;
+        _this.funcOptionsForm.allowMethod = currentFunc.options.allowMethod;
         initializeCodeEditor(this.$refs.editor, currentFunc.content);
       });
     } else {
@@ -124,7 +134,7 @@ export default {
     destoryCodeEditor();
   },
   methods: {
-    checkInput(namespace, timeout, content) {
+    checkInput(namespace, timeout, content, allowMethod) {
       console.log("timeout: ", timeout);
       const timeoutReg = /^[0-9]+.?[0-9]*$/;
       const validCodeReg = /module\.exports\.func.*=/;
@@ -132,15 +142,14 @@ export default {
         this.$message.error("函数命名空间不能为空");
         return false;
       }
+      if (allowMethod.length === 0) {
+        this.$message.error("必须选择一个函数触发方法");
+        return false;
+      }
       if (!timeoutReg.test(timeout)) {
         this.$message.error("函数超时时间不合法");
         return false;
       }
-      console.log(
-        "parseInt(timeout): ",
-        parseInt(timeout),
-        parseInt(timeout) < 20000
-      );
       if (timeoutReg.test(timeout) && parseInt(timeout) > 20000) {
         this.$message.error("函数超时时间不能超过20秒");
         return false;
@@ -160,7 +169,8 @@ export default {
         !_this.checkInput(
           _this.funcOptionsForm.funcNameSpace,
           _this.funcOptionsForm.timeout,
-          funcContent
+          funcContent,
+          _this.funcOptionsForm.allowMethod
         )
       ) {
         return;
@@ -172,6 +182,7 @@ export default {
         options: JSON.stringify({
           description: _this.funcOptionsForm.description,
           timeout: parseInt(_this.funcOptionsForm.timeout),
+          allowMethod: _this.funcOptionsForm.allowMethod,
         }),
       })
         .then((res) => {
@@ -194,6 +205,7 @@ export default {
         options: JSON.stringify({
           description: _this.funcOptionsForm.description,
           timeout: _this.funcOptionsForm.timeout,
+          allowMethod: _this.funcOptionsForm.allowMethod,
         }),
       })
         .then((res) => {
@@ -222,7 +234,11 @@ export default {
 .func-editor {
   height: 300px;
   border: 1px solid #ebeef5;
-  margin: 0 20px;
+}
+.func-editor-disable {
+  height: 300px;
+  border: 1px solid #ebeef5;
+  pointer-events: none;
 }
 .func-option {
   margin: 0 20px;

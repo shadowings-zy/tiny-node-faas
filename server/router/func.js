@@ -2,12 +2,14 @@ const path = require('path')
 const fs = require('fs-extra')
 const Router = require('koa-router')
 const cryptoRandomString = require('crypto-random-string')
+const { formatResponse } = require('../middlewares/formatResponse')
 const { FUNC_FILE_NAME, FUNC_OPTIONS_FILE_NAME, FUNC_ID_LENGHT, ROOT_PATH } = require('./constants')
 const { DEFAULT_FUNCTION_EXEC_OPTIONS } = require('../faas/constants')
 const { filterTargetFuncDir, getFuncBasicInfo } = require('../utils/file')
 
 const funcRouter = new Router({ prefix: '/func' })
 
+funcRouter.use(formatResponse)
 funcRouter.get('/', async (ctx, next) => {
   const { namespace, author, id } = ctx.request.query
 

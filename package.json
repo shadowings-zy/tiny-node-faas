@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "description": "a light weight faas framework coding by nodejs",
   "scripts": {
-    "dev": "npm run dev:client & npm run start",
+    "dev": "npm run dev:client & npm run dev:server",
     "dev:client": "cd client && npm run serve",
-    "start": "cd server && npm run start",
+    "dev:server": "cd server && npm run dev",
     "build:all": "rm -rf ./server/static/* && cd client && npm run build && mv ./dist/* ../server/static/"
   }
 }
