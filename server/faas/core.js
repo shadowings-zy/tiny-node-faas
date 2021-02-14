@@ -1,11 +1,17 @@
 const vm = require('vm')
 const { DEFAULT_FUNCTION_EXEC_OPTIONS } = require('./constants')
 const { generateCode } = require('./generateCode')
+const { checkFunctionValid } = require('./checkFunction')
 
 const runFunction = async (ctx, func, options) => {
   let timer = null
   const faasOptions = Object.assign(DEFAULT_FUNCTION_EXEC_OPTIONS, options)
   const { id: funcId, scriptPath } = func
+  const functionValid = await checkFunctionValid(scriptPath)
+
+  if (!functionValid) {
+    throw Error(`invalid function, you can not use module 'os'`)
+  }
 
   const result = await new Promise((resolve, reject) => {
     const sandbox = {
