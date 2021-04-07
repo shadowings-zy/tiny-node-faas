@@ -3,9 +3,13 @@
   "version": "1.0.0",
   "description": "a light weight faas framework coding by nodejs",
   "scripts": {
-    "dev": "npm run dev:client & npm run dev:server",
-    "dev:client": "cd client && npm run serve",
+    "bootstrap": "lerna bootstrap",
+    "dev:all": "lerna run --parallel dev",
+    "dev:client": "cd client && npm run dev",
     "dev:server": "cd server && npm run dev",
     "build:all": "rm -rf ./server/static/* && cd client && npm run build && mv ./dist/* ../server/static/"
+  },
+  "devDependencies": {
+    "lerna": "^4.0.0"
   }
 }
